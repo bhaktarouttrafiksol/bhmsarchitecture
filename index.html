@@ -75,17 +75,17 @@ graph LR
     Router --> LPU
     LPU --> API
     API --> DB
-    API --> DB
-    DB --> API
+    API -->|Data Request| DB
+    DB -->|Get Data| API
   end
 
-  subgraph FRONTEND ["💻 Frontend - Web Application"]
+  subgraph FRONTEND ["💻 Client - Web Application"]
     WebApp["🌐 Web Application\nLogin & Live Monitoring"]
   end
 
   %% Arrows for data requests and responses
   WebApp -->|Data Request| API
-  API -->|Data Get| WebApp
+  API -->|Get Data| WebApp
 
   %% Dashed style for all edges
   linkStyle default stroke-dasharray: 6, 4, stroke:#333, stroke-width:1.5px;
@@ -110,7 +110,7 @@ graph LR
       <li>Sensor data is stored and retrieved from the PostgreSQL database.</li>
       <li>The Central Server handles HTTP requests, authentication, and serves data.</li>
     </ul>
-    <p><strong>4. Frontend Layer:</strong></p>
+    <p><strong>4. Frontend(Client) Layer:</strong></p>
     <ul>
       <li>The Web Application authenticates users and requests sensor data from the Central Server.</li>
       <li>The Web Application displays live monitoring data.</li>
@@ -125,7 +125,7 @@ graph LR
   </section>
 
   <footer>
-    ©2025 TrafikSol ITS Technologies Limited. Created by Bhakta Charan Rout.
+    ©2025 Trafiksol ITS Technologies Limited. Created by Bhakta Charan Rout.
   </footer>
 
   <script>
