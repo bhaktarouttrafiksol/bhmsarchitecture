@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bridge Health Management System Architecture</title>
+
+  <!-- Mermaid CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 1rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    .mermaid {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    h2 {
+      text-align: center;
+      font-weight: 700;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #777;
+      border-top: 1px solid #ddd;
+    }
+    .animated-line {
+      stroke-dasharray: 10;
+      stroke-dashoffset: 10;
+      animation: dashmove 1s linear infinite;
+    }
+    @keyframes dashmove {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Bridge Health Management System Architecture Design</h2>
+
+  <div class="mermaid">
+graph LR
+  %% Define subgraphs with quoted labels to allow emojis and multiline \n
+  subgraph EDGE ["🏗️ Edge Layer - On Bridge"]
+    Vehicle["🌉 Bridge"]
+    Sensors["🔧 Sensors\nInclinometer\nAccelerometer\nStrain Gauge\nDisplacement"]
+    Vehicle --> Sensors
+  end
+
+  subgraph NETWORK ["🌐 Local Network Layer"]
+    Router["🏠 Local Network"]
+    Sensors --> Router
+  end
+
+  subgraph BACKEND ["🗄️ Central Server - Backend"]
+    LPU["💻 Workstation (Sensors Services)"]
+    API["🖥️ Central Server\nHandles HTTP + Auth"]
+    DB["💾 PostgreSQL DB"]
+    Router --> LPU
+    LPU --> API
+    API --> DB
+    API --> DB
+    DB --> API
+  end
+
+  subgraph FRONTEND ["💻 Frontend - Web Application"]
+    WebApp["🌐 Web Application\nLogin & Live Monitoring"]
+  end
+
+  %% Arrows for data requests and responses
+  WebApp -->|Data Request| API
+  API -->|Data Get| WebApp
+
+  %% Dashed style for all edges
+  linkStyle default stroke-dasharray: 6, 4, stroke:#333, stroke-width:1.5px;
+</div>
+
+
+  <!-- Workflow Explanation -->
+  <section>
+    <h3>Workflow Explanation</h3>
+    <p><strong>1. Edge Layer (On Bridge):</strong></p>
+    <ul>
+      <li>Sensors (Inclinometer, Accelerometer, Strain Gauge, Displacement) collect real-time data from the bridge.</li>
+      <li>Sensors send MQTT data over the Local Network to the Central Server through Sensors services.</li>
+    </ul>
+    <p><strong>2. Network Layer:</strong></p>
+    <ul>
+      <li>Local Network transmits sensor data from the edge to the Workstation/Central Server.</li>
+    </ul>
+    <p><strong>3. Central Server - Backend Layer:</strong></p>
+    <ul>
+      <li>In Workstation, sensors Services run on the Central Server, processing incoming sensor data.</li>
+      <li>Sensor data is stored and retrieved from the PostgreSQL database.</li>
+      <li>The Central Server handles HTTP requests, authentication, and serves data.</li>
+    </ul>
+    <p><strong>4. Frontend Layer:</strong></p>
+    <ul>
+      <li>The Web Application authenticates users and requests sensor data from the Central Server.</li>
+      <li>The Web Application displays live monitoring data.</li>
+    </ul>
+    <p><strong>Data Flow Summary:</strong></p>
+    <ul>
+      <li>Sensors → Local Network (MQTT/HTTP)</li>
+      <li>Local Network → Central Server (Workstation sensors Services)</li>
+      <li>Central Server → Database (Store and Fetch Data)</li>
+      <li>Web Application → Central Server (Login and Data Requests)</li>
+    </ul>
+  </section>
+
+  <footer>
+    ©2025 TrafikSol ITS Technologies Limited. Created by Bhakta Charan Rout.
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        const mermaidSvg = document.querySelector('.mermaid svg');
+        if (mermaidSvg) {
+          const paths = mermaidSvg.querySelectorAll('path');
+          paths.forEach(path => {
+            if (path.getAttribute('marker-end')) {
+              path.classList.add('animated-line');
+            }
+          });
+        }
+      }, 1000);
+    });
+  </script>
+
+</body>
+</html>
